@@ -1,0 +1,406 @@
+﻿-- phpMyAdmin SQL Dump
+-- version 4.8.5
+-- https://www.phpmyadmin.net/
+--
+-- Servidor: 127.0.0.1
+-- Tiempo de generación: 30-08-2019 a las 19:27:17
+-- Versión del servidor: 10.1.38-MariaDB
+-- Versión de PHP: 7.1.28
+
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET AUTOCOMMIT = 0;
+START TRANSACTION;
+SET time_zone = "+00:00";
+
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8mb4 */;
+
+--
+-- Base de datos: `baseproyectoisoo`
+--
+
+DELIMITER $$
+--
+-- Procedimientos
+--
+CREATE DEFINER=`root`@`localhost` PROCEDURE `insertProblem` (IN `indice` INT, IN `problem` VARCHAR(1000), IN `idSubject` INT)  begin
+insert into problemas(idproblemas,Problema,idTema)values(indice,problem,idSubject);
+end$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `insertSoluciones` (IN `indice` INT, IN `solution` VARCHAR(1000), IN `idSubject` INT)  begin
+insert into soluciones(idSolucion,Solucion,idTema)values(indice,solution,idSubject);
+end$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `insertSolucionesAplicadas` (IN `indice` INT, IN `solution` VARCHAR(1000), IN `idSubject` INT)  begin
+insert into solucionesAplicadas(idsolucionesAplicadas,solucionaplicada,idTema)values(indice,solution,idSubject);
+end$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `insertTemas` (IN `indice` INT, IN `temas` VARCHAR(1000), IN `Aplicaciones` VARCHAR(1000), IN `Servicios` VARCHAR(1000))  begin
+insert into temas(idTema,Tema,Aplicacion,Servicio)values(indice,temas,Aplicaciones,Servicios);
+end$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `insertTemasModify` (IN `idSubject` INT, IN `temas` VARCHAR(1000), IN `Aplicaciones` VARCHAR(1000), IN `Servicios` VARCHAR(1000))  begin
+update temas set idTema=idSubject,Tema=temas,Aplicacion=Aplicaciones,Servicio=Servicios where idTema=idSubject;
+end$$
+
+DELIMITER ;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `adminwindows`
+--
+
+CREATE TABLE `adminwindows` (
+  `idAdminWindows` int(11) NOT NULL,
+  `TipoJob` varchar(250) DEFAULT NULL,
+  `MotivoJob` varchar(1000) DEFAULT NULL,
+  `DetalleJob` varchar(1000) DEFAULT NULL,
+  `ip` varchar(50) DEFAULT NULL,
+  `PersonaAutorisada` varchar(250) DEFAULT NULL,
+  `PersonaResponsable` varchar(250) DEFAULT NULL,
+  `EjecutorJob` varchar(250) DEFAULT NULL,
+  `SolicitanteJob` varchar(250) DEFAULT NULL,
+  `FechaInicio` date DEFAULT NULL,
+  `FechaFin` date DEFAULT NULL,
+  `FechaInicioReal` date DEFAULT NULL,
+  `FechaFinReal` date DEFAULT NULL,
+  `ServiciosAfectados` varchar(500) DEFAULT NULL,
+  `ZonaGeografica` varchar(500) DEFAULT NULL,
+  `UsuarioAfectarios` varchar(500) DEFAULT NULL,
+  `GrupoJob` varchar(500) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `aplications`
+--
+
+CREATE TABLE `aplications` (
+  `idAplications` int(11) NOT NULL,
+  `Descripcion` varchar(250) DEFAULT NULL,
+  `idService` varchar(45) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Volcado de datos para la tabla `aplications`
+--
+
+INSERT INTO `aplications` (`idAplications`, `Descripcion`, `idService`) VALUES
+(27, 'en casa', '33'),
+(28, 'en el hogar', '34');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `categoria`
+--
+
+CREATE TABLE `categoria` (
+  `id` int(11) NOT NULL,
+  `nombre` varchar(100) CHARACTER SET utf8 NOT NULL,
+  `estado` int(11) NOT NULL DEFAULT '1'
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `login`
+--
+
+CREATE TABLE `login` (
+  `idLogin` int(11) NOT NULL,
+  `Usuario` varchar(45) NOT NULL,
+  `Clave` varchar(45) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Volcado de datos para la tabla `login`
+--
+
+INSERT INTO `login` (`idLogin`, `Usuario`, `Clave`) VALUES
+(0, 'admin', 'admin');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `platform`
+--
+
+CREATE TABLE `platform` (
+  `idPlatform` int(11) NOT NULL,
+  `Descripcion` varchar(250) DEFAULT NULL,
+  `idAplications` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Volcado de datos para la tabla `platform`
+--
+
+INSERT INTO `platform` (`idPlatform`, `Descripcion`, `idAplications`) VALUES
+(27, 'electronica', 27),
+(28, 'escritorio', 28);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `problemas`
+--
+
+CREATE TABLE `problemas` (
+  `idproblemas` int(11) NOT NULL,
+  `Problema` varchar(1000) DEFAULT NULL,
+  `idTema` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `service`
+--
+
+CREATE TABLE `service` (
+  `idService` int(11) NOT NULL,
+  `Descripcion` varchar(250) DEFAULT NULL,
+  `Estado` varchar(45) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Volcado de datos para la tabla `service`
+--
+
+INSERT INTO `service` (`idService`, `Descripcion`, `Estado`) VALUES
+(33, 'internet', 'Activado'),
+(34, 'Internet', 'Activado');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `servicios`
+--
+
+CREATE TABLE `servicios` (
+  `id` int(11) NOT NULL,
+  `codigo` int(25) DEFAULT NULL,
+  `serv` varchar(100) CHARACTER SET utf8 NOT NULL,
+  `apl` varchar(100) CHARACTER SET utf8 NOT NULL,
+  `plat` varchar(100) CHARACTER SET utf8 NOT NULL,
+  `estadoserv` varchar(100) CHARACTER SET utf8 NOT NULL,
+  `tieneip` tinyint(1) NOT NULL,
+  `ip` varchar(16) NOT NULL,
+  `estado` int(1) NOT NULL DEFAULT '1',
+  `idcategoria` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `servidores`
+--
+
+CREATE TABLE `servidores` (
+  `idServidores` int(11) NOT NULL,
+  `Descripcion` varchar(250) DEFAULT NULL,
+  `idPlatform` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Volcado de datos para la tabla `servidores`
+--
+
+INSERT INTO `servidores` (`idServidores`, `Descripcion`, `idPlatform`) VALUES
+(18, 'google.com', 28);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `soluciones`
+--
+
+CREATE TABLE `soluciones` (
+  `idSolucion` int(11) NOT NULL,
+  `Solucion` varchar(1000) DEFAULT NULL,
+  `idTema` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `solucionesaplicadas`
+--
+
+CREATE TABLE `solucionesaplicadas` (
+  `idsolucionesAplicadas` int(11) NOT NULL,
+  `SolucionAplicada` varchar(1000) DEFAULT NULL,
+  `idTema` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `temas`
+--
+
+CREATE TABLE `temas` (
+  `idTema` int(11) NOT NULL,
+  `Tema` varchar(1000) DEFAULT NULL,
+  `Aplicacion` varchar(1000) DEFAULT NULL,
+  `Servicio` varchar(1000) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Índices para tablas volcadas
+--
+
+--
+-- Indices de la tabla `adminwindows`
+--
+ALTER TABLE `adminwindows`
+  ADD PRIMARY KEY (`idAdminWindows`);
+
+--
+-- Indices de la tabla `aplications`
+--
+ALTER TABLE `aplications`
+  ADD PRIMARY KEY (`idAplications`);
+
+--
+-- Indices de la tabla `categoria`
+--
+ALTER TABLE `categoria`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indices de la tabla `login`
+--
+ALTER TABLE `login`
+  ADD PRIMARY KEY (`idLogin`);
+
+--
+-- Indices de la tabla `platform`
+--
+ALTER TABLE `platform`
+  ADD PRIMARY KEY (`idPlatform`);
+
+--
+-- Indices de la tabla `problemas`
+--
+ALTER TABLE `problemas`
+  ADD PRIMARY KEY (`idproblemas`),
+  ADD KEY `fkProblemaTema` (`idTema`);
+
+--
+-- Indices de la tabla `service`
+--
+ALTER TABLE `service`
+  ADD PRIMARY KEY (`idService`);
+
+--
+-- Indices de la tabla `servicios`
+--
+ALTER TABLE `servicios`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `idcategoria` (`idcategoria`);
+
+--
+-- Indices de la tabla `servidores`
+--
+ALTER TABLE `servidores`
+  ADD PRIMARY KEY (`idServidores`);
+
+--
+-- Indices de la tabla `soluciones`
+--
+ALTER TABLE `soluciones`
+  ADD PRIMARY KEY (`idSolucion`),
+  ADD KEY `fkSolucionesTema` (`idTema`);
+
+--
+-- Indices de la tabla `solucionesaplicadas`
+--
+ALTER TABLE `solucionesaplicadas`
+  ADD PRIMARY KEY (`idsolucionesAplicadas`),
+  ADD KEY `fkSolucionAplicadasTema` (`idTema`);
+
+--
+-- Indices de la tabla `temas`
+--
+ALTER TABLE `temas`
+  ADD PRIMARY KEY (`idTema`);
+
+--
+-- AUTO_INCREMENT de las tablas volcadas
+--
+
+--
+-- AUTO_INCREMENT de la tabla `aplications`
+--
+ALTER TABLE `aplications`
+  MODIFY `idAplications` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
+
+--
+-- AUTO_INCREMENT de la tabla `categoria`
+--
+ALTER TABLE `categoria`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT de la tabla `platform`
+--
+ALTER TABLE `platform`
+  MODIFY `idPlatform` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
+
+--
+-- AUTO_INCREMENT de la tabla `service`
+--
+ALTER TABLE `service`
+  MODIFY `idService` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
+
+--
+-- AUTO_INCREMENT de la tabla `servicios`
+--
+ALTER TABLE `servicios`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT de la tabla `servidores`
+--
+ALTER TABLE `servidores`
+  MODIFY `idServidores` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+
+--
+-- Restricciones para tablas volcadas
+--
+
+--
+-- Filtros para la tabla `problemas`
+--
+ALTER TABLE `problemas`
+  ADD CONSTRAINT `fkProblemaTema` FOREIGN KEY (`idTema`) REFERENCES `temas` (`idTema`);
+
+--
+-- Filtros para la tabla `servicios`
+--
+ALTER TABLE `servicios`
+  ADD CONSTRAINT `servicios_ibfk_1` FOREIGN KEY (`idcategoria`) REFERENCES `categoria` (`id`);
+
+--
+-- Filtros para la tabla `soluciones`
+--
+ALTER TABLE `soluciones`
+  ADD CONSTRAINT `fkSolucionesTema` FOREIGN KEY (`idTema`) REFERENCES `temas` (`idTema`);
+
+--
+-- Filtros para la tabla `solucionesaplicadas`
+--
+ALTER TABLE `solucionesaplicadas`
+  ADD CONSTRAINT `fkSolucionAplicadasTema` FOREIGN KEY (`idTema`) REFERENCES `temas` (`idTema`);
+COMMIT;
+
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
